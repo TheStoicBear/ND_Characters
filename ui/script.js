@@ -1,40 +1,75 @@
-
 function display(bool) {
+    console.log("Display called with:", bool);
     if (bool) {
-        return $("body").show();
+        $("body").removeClass("hidden").addClass("flex");
+    } else {
+        $("body").removeClass("flex").addClass("hidden");
     }
-    $("body").hide();
 }
 
-const menus = ["#characterCreator", "#characterEditor", "#exitGameMenu", "#deleteCharacterMenu", "#spawnLocation"]
+const menus = ["#characterCreator", "#characterEditor", "#exitGameMenu", "#deleteCharacterMenu", "#spawnLocation"];
+
 function displayMenu(menu, status) {
+    console.log("Displaying menu:", menu, "Status:", status);
+    const menuSelector = `#${menu}`;
     if (status) {
-        $(`#${menu}`).fadeIn("slow");
+        // Show the menu and backdrop
+        $(menuSelector).fadeIn("slow").removeClass("hidden").addClass("flex");
+        $("#backdrop").fadeIn("slow").removeClass("hidden");
+        
+        // Hide other menus
         menus.forEach(item => {
-            if (!item.includes(menu)) {
-                $(item).hide();
+            if (item !== menuSelector) {
+                $(item).removeClass("flex").addClass("hidden");
             }
         });
-        return;
+    } else {
+        // Hide the menu
+        $(menuSelector).fadeOut("slow", function() {
+            // Check if all menus are hidden
+            const anyMenuVisible = menus.some(item => $(item).is(':visible'));
+            if (!anyMenuVisible) {
+                // Hide the backdrop only if no menus are visible
+                $("#backdrop").fadeOut("slow");
+            }
+        });
     }
-    $(`#${menu}`).fadeOut("slow");
 }
 
 function createCharacter(firstName, lastName, dateOfBirth, gender, ethnicity, department, id) {
-    const job = department && ` (${department})`
-    if (job && (firstName.length + lastName.length + job.length) > 24) {
-        $("#charactersSection").append(`<button id="characterButton${id}" class="createdButton animated"><span>${firstName} ${lastName}${job}</span></button><button id="characterButtonEdit${id}" class="createdButtonEdit"><a class="fas fa-edit"></a> Edit</button><button id="characterButtonDelete${id}" class="createdButtonDelete"><a class="fas fa-trash-alt"></a> Delete</button>`);
-    } else {
-        $("#charactersSection").append(`<button id="characterButton${id}" class="createdButton"><span>${firstName} ${lastName}${job}</span></button><button id="characterButtonEdit${id}" class="createdButtonEdit"><a class="fas fa-edit"></a> Edit</button><button id="characterButtonDelete${id}" class="createdButtonDelete"><a class="fas fa-trash-alt"></a> Delete</button>`);
-    }
+    const job = department && ` (${department})`;
+    const charButtonClass = (firstName.length + lastName.length + (job ? job.length : 0)) > 24 ? 
+        `bg-blue-900 text-white py-2 px-4 rounded flex-1` : `bg-blue-900 text-white py-2 px-4 rounded flex-1`;
+
+    $("#charactersSection").append(`
+        <div class="flex mb-2">
+            <button id="characterButton${id}" class="${charButtonClass} flex-1 flex justify-between items-center">
+                <div class="flex flex-col">
+                    <span class="font-bold">${firstName} ${lastName}</span>
+                    <div class="text-sm text-blue-300">${job}</div>
+                </div>
+                <div class="flex gap-2 items-center">
+                    <span class="bg-yellow-500 text-white py-1 px-2 rounded-lg flex items-center cursor-pointer" id="characterButtonEdit${id}">
+                        <i class="fas fa-edit mr-1"></i>
+                    </span>
+                    <span class="bg-red-600 text-white py-1 px-2 rounded-lg flex items-center cursor-pointer" id="characterButtonDelete${id}">
+                        <i class="fas fa-trash-alt mr-1"></i>
+                    </span>
+                </div>
+            </button>
+        </div>
+    `);
+
+
+    // Handle click on the character button
     $(`#characterButton${id}`).click(function() {
         displayMenu("spawnLocation", true);
-        $.post(`https://${GetParentResourceName()}/setMainCharacter`, JSON.stringify({
-            id: id
-        }));
-        return;
+        $.post(`https://${GetParentResourceName()}/setMainCharacter`, JSON.stringify({ id: id }));
     });
-    $(`#characterButtonEdit${id}`).click(function() {
+
+    // Handle click on the edit button
+    $(`#characterButtonEdit${id}`).click(function(event) {
+        event.stopPropagation(); // Prevent event from bubbling up
         displayMenu("characterEditor", true);
         $("#newFirstName").val(firstName);
         $("#newLastName").val(lastName);
@@ -42,15 +77,17 @@ function createCharacter(firstName, lastName, dateOfBirth, gender, ethnicity, de
         $("#newGender").val(gender);
         $("#newTwtName").val(ethnicity);
         $("#newDepartment").val(department);
-        characterEdited = id
-        return;
+        characterEdited = id;
     });
-    $(`#characterButtonDelete${id}`).click(function() {
+
+    // Handle click on the delete button
+    $(`#characterButtonDelete${id}`).click(function(event) {
+        event.stopPropagation(); // Prevent event from bubbling up
         displayMenu("deleteCharacterMenu", true);
-        characterDeleting = id
-        return;
+        characterDeleting = id;
     });
 }
+
 
 $("#characterCreator").submit(function() {
     $.post(`https://${GetParentResourceName()}/newCharacter`, JSON.stringify({
@@ -62,7 +99,7 @@ $("#characterCreator").submit(function() {
         department: $("#department").val()
     }));
     displayMenu("characterCreator", false);
-    $("#firstName, #lastName, #dateOfBirth, #twtName").val("")
+    $("#firstName, #lastName, #dateOfBirth, #twtName").val("");
     return false;
 });
 
@@ -82,62 +119,55 @@ $("#characterEditor").submit(function() {
 
 $("#deleteCharacterConfirm").click(function() {
     displayMenu("deleteCharacterMenu", false);
-    $("#characterButton" + characterDeleting).fadeOut("slow",function(){
-        $("#characterButton" + characterDeleting).remove();
-    })
-    $("#characterButtonEdit" + characterDeleting).fadeOut("slow",function(){
-        $("#characterButtonEdit" + characterDeleting).remove();
-    })
-    $("#characterButtonDelete" + characterDeleting).fadeOut("slow",function(){
-        $("#characterButtonDelete" + characterDeleting).remove();
-    })
-    $.post(`https://${GetParentResourceName()}/delCharacter`, JSON.stringify({
-        character: characterDeleting
-    }));
-    return;
+    $(`#characterButton${characterDeleting}`).fadeOut("slow", function() {
+        $(this).remove();
+    });
+    $(`#characterButtonEdit${characterDeleting}`).fadeOut("slow", function() {
+        $(this).remove();
+    });
+    $(`#characterButtonDelete${characterDeleting}`).fadeOut("slow", function() {
+        $(this).remove();
+    });
+    $.post(`https://${GetParentResourceName()}/delCharacter`, JSON.stringify({ character: characterDeleting }));
 });
 
 $("#newCharacterButton").click(function() {
     displayMenu("characterCreator", true);
-    return;
 });
 
 $("#deleteCharacterCancel").click(function() {
     displayMenu("deleteCharacterMenu", false);
-    return;
 });
+
 $("#cancelCharacterCreation").click(function() {
     displayMenu("characterCreator", false);
-    return;
 });
+
 $("#cancelCharacterEditing").click(function() {
     displayMenu("characterEditor", false);
-    return;
 });
 
 $("#tpCancel").click(function() {
     displayMenu("spawnLocation", false);
-    setTimeout(function(){
+    setTimeout(function() {
         $("#spawnMenuContainer").empty();
     }, 550);
-    return;
 });
 
 $("#quitGameButton").click(function() {
     displayMenu("exitGameMenu", true);
-    return;
 });
+
 $("#exitGameCancel").click(function() {
     displayMenu("exitGameMenu", false);
-    return;
 });
+
 $("#exitGameConfirm").click(function() {
     $.post(`https://${GetParentResourceName()}/exitGame`);
-    return;
 });
 
 $(document).on("click", ".spawnButtons", function() {
-    const th = $(this)
+    const th = $(this);
     $.post(`https://${GetParentResourceName()}/tpToLocation`, JSON.stringify({
         x: th.data("x"),
         y: th.data("y"),
@@ -145,20 +175,17 @@ $(document).on("click", ".spawnButtons", function() {
         id: th.data("id")
     }));
     displayMenu("spawnLocation", false);
-    setTimeout(function(){
+    setTimeout(function() {
         $("#spawnMenuContainer").empty();
     }, 550);
-    return;
 });
+
 $(document).on("click", "#tpDoNot", function() {
-    $.post(`https://${GetParentResourceName()}/tpDoNot`, JSON.stringify({
-        id: $("#tpDoNot").data("id")
-    }));
+    $.post(`https://${GetParentResourceName()}/tpDoNot`, JSON.stringify({ id: $("#tpDoNot").data("id") }));
     displayMenu("spawnLocation", false);
-    setTimeout(function(){
+    setTimeout(function() {
         $("#spawnMenuContainer").empty();
     }, 550);
-    return;
 });
 
 window.addEventListener("message", function(event) {
@@ -177,21 +204,29 @@ window.addEventListener("message", function(event) {
 
     if (item.type === "setSpawns") {
         $("#spawnMenuContainer").empty();
-        setTimeout(function(){
+        setTimeout(function() {
             $("#tpDoNot").data("id", item.id);
             JSON.parse(item.spawns).forEach((location) => {
-                $("#spawnMenuContainer").append(`<button class="spawnButtons" data-x="${location.coords.x}" data-y="${location.coords.y}" data-z="${location.coords.z}" data-id="${item.id}">${location.label}</button>`);
+                $("#spawnMenuContainer").append(`
+                    <button class="spawnButtons bg-blue-900 text-white py-2 px-4 rounded-lg mb-2" 
+                        data-x="${location.coords.x}" data-y="${location.coords.y}" data-z="${location.coords.z}" data-id="${item.id}">
+                        ${location.label}
+                    </button>
+                `);
             });
         }, 10);
     }
 
     if (item.type === "firstSpawn") {
-        $("#tpDoNot").html(`<a class="fas fa-compass" style="color:white;"></a> Do not teleport`)
+        $("#tpDoNot").html(`<i class="fas fa-compass text-white"></i> Do not teleport`);
     }
 
     if (item.type === "givePerms") {
+        console.log("Received job permissions:", item.deptRoles);
         $(".departments").empty();
-        JSON.parse(item.deptRoles).forEach((job) => {
+        const jobs = JSON.parse(item.deptRoles);
+        jobs.forEach((job) => {
+            console.log("Adding job to dropdown:", job.name, job.label);
             $(".departments").append(`<option value="${job.name}">${job.label}</option>`);
         });
     }
@@ -203,9 +238,9 @@ window.addEventListener("message", function(event) {
     if (item.type === "refresh") {
         $("#charactersSection").empty();
         displayMenu("characterCreator", false);
-        let characters = JSON.parse(item.characters)
+        let characters = JSON.parse(item.characters);
         Object.keys(characters).forEach((id) => {
-            const char = characters[id]
+            const char = characters[id];
             if (char) {
                 createCharacter(
                     char.firstname || "",
@@ -214,7 +249,7 @@ window.addEventListener("message", function(event) {
                     char.gender || "",
                     char.metadata.ethnicity || "",
                     char.jobInfo?.label || char.job || "",
-                    char.id || "",
+                    char.id || ""
                 );
             }
         });
@@ -226,4 +261,4 @@ window.addEventListener("message", function(event) {
     if (item.type === "logo" && item.logo) {
         $("#logo").attr("src", item.logo);
     }
-})
+});
