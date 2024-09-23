@@ -1,166 +1,166 @@
 <!DOCTYPE html>
-<html>
-    <head>
-        <meta charset="utf-8">
-        <link rel="stylesheet" href="style.css">
-        <script src="https://use.fontawesome.com/releases/v5.15.4/js/all.js" data-auto-a11y="true"></script>
-        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
-        <script src="script.js" type="text/javascript" defer></script>
-    </head>
-    <body>
-        <!--Main page design-->
-        <section id="overlay">
-            <div id="logoContainer">
-                <img src="https://i.imgur.com/02A5Cgl.png" id="logo">
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+    <script src="https://use.fontawesome.com/releases/v5.15.4/js/all.js" data-auto-a11y="true"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+    <script src="script.js" type="text/javascript" defer></script>
+</head>
+<body class="bg-transparent text-white flex items-center justify-center min-h-screen">
+    <div id="backdrop" class="fixed inset-0 bg-black opacity-70 hidden"></div>
+    <div class="space-y-8">
+        <section id="overlay" class="p-4 bg-gray-900 rounded-lg shadow-lg max-w-lg w-full mx-auto absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 shadow-lg ring-2 ring-purple-500 ring-opacity-70">
+            <div id="logoContainer" class="flex justify-center mb-4">
+                <img src="https://cdn.discordapp.com/attachments/1213681910899810364/1221231973872435210/Seal_of_Oregon.svg.png?ex=6611d3e7&is=65ff5ee7&hm=7a16d5d8c61dc42bb6a6d8a54a7207c8a38f7f4a8d039f8e8581f49afbff6445&" id="logo" class="w-32 h-auto">
             </div>
-
-            <h1 id="serverName"></h1>
-            <p id="aop" class="mainPage" style="margin-bottom: -1vh;"></p>
-            <p class="mainPage">Select or create a character:</p>
-
-            <button class="homeScreenButton" id="newCharacterButton"><a class="fas fa-plus-circle" style="color:white;"></a> Create New Character <a id="playerAmount"></a></button>
-            <br>
-            <button class="homeScreenButton" id="quitGameButton"><a class="fas fa-sign-out-alt" style="color:white;"></a> Quit Game</button>
-            
-            <div id="charactersSection">
-                <!--Characters will be added here-->
+            <h1 id="serverName" class="text-3xl font-bold text-center mb-2"></h1>
+            <div class="flex flex-col items-center mb-4">
+                <p id="aop" class="text-xl mb-2"></p>
+                <p class="text-lg text-center mb-4">Select or create a character:</p>
+                <div class="flex justify-center gap-4 mb-4">
+                    <button class="bg-indigo-600 text-white px-4 py-2 rounded flex items-center gap-2 transition duration-200 hover:bg-indigo-700 hover:shadow-lg" id="newCharacterButton">
+                        <i class="fas fa-plus-circle"></i> Create New Character <span id="playerAmount"></span>
+                    </button>
+                    <button class="bg-red-600 text-white px-4 py-2 rounded flex items-center gap-2 transition duration-200 hover:bg-red-700 hover:shadow-lg" id="quitGameButton">
+                        <i class="fas fa-sign-out-alt"></i> Quit Game
+                    </button>
+                </div>
+                <div id="charactersSection" class="flex flex-col gap-2">
+                    <!-- Characters will be added here -->
+                </div>
             </div>
         </section>
 
-        <!--Create character menu design-->
-        <form id="characterCreator" class="characterMenu">
-            <p id="characterCreatorTopText"><a class="fas fa-user-edit" style="color:white;"></a> Character Creation</p>
-            <hr id="characterCreatorTopTextLine">
-            <div id="characterInfoContainer">
-                <div id="characterInfoContainerLeft">
-                    <!--First name-->
-                    <label class="firstRowText" for="firstname">First Name</label>
-                    <br>
-                    <input id="firstName" class="firstRowInput" type="text" placeholder="First Name" name="firstname" required>
-
-                    <br>
-
-                    <!--Dob-->
-                    <label class="secondRowText" for="dob">Date of Birth</label>
-                    <br>
-                    <input id="dateOfBirth" class="secondRowInput" type="date" name="dob" max="9999-12-31" required>
-
-                    <br>
-
-                    <!--Used to be Twotter name now is Ethnicity-->
-                    <label class="thirdRowText" for="twotter">Ethnicity</label>
-                    <br>
-                    <input id="twtName" class="thirdRowInput" type="text" placeholder="Ethnicity" name="twotter" required>
+        <!-- Create character menu design -->
+        <form id="characterCreator" class="p-4 bg-gray-900 rounded-lg shadow-lg max-w-sm w-full mx-auto absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 hidden">
+            <p id="characterCreatorTopText" class="text-2xl font-semibold mb-2">
+                <i class="fas fa-user-edit"></i> Character Creation
+            </p>
+            <hr class="border-gray-600 mb-4">
+            <div id="characterInfoContainer" class="flex gap-4">
+                <div class="flex-1">
+                    <label class="block text-sm font-medium mb-1" for="firstName">First Name</label>
+                    <input id="firstName" class="block w-full p-2 mb-4 rounded border-gray-600 bg-gray-700 text-white" type="text" placeholder="First Name" name="firstname" required>
+                    <label class="block text-sm font-medium mb-1" for="dateOfBirth">Date of Birth</label>
+                    <input id="dateOfBirth" class="block w-full p-2 mb-4 rounded border-gray-600 bg-gray-700 text-white" type="date" name="dob" max="9999-12-31" required>
+                    <label class="block text-sm font-medium mb-1" for="twtName">Ethnicity</label>
+                    <input id="twtName" class="block w-full p-2 mb-4 rounded border-gray-600 bg-gray-700 text-white" type="text" placeholder="Ethnicity" name="twotter" required>
                 </div>
-                <div id="characterInfoContainerRight">
-                    <!--Last name-->
-                    <label class="firstRowText" for="lastname">Last Name</label>
-                    <br>
-                    <input id="lastName" style="width: 93%;" class="firstRowInput" type="text" placeholder="Last Name" name="lastname" required>
-
-                    <br>
-
-                    <!--gender-->
-                    <label class="secondRowText" for="gender">Gender</label>
-                    <br>
-                    <select id="gender" class="secondRowInput" name="gender" required>
-                        <option class="secondRowInput">Male</option>
-                        <option class="secondRowInput">Female</option>
+                <div class="flex-1">
+                    <label class="block text-sm font-medium mb-1" for="lastName">Last Name</label>
+                    <input id="lastName" class="block w-full p-2 mb-4 rounded border-gray-600 bg-gray-700 text-white" type="text" placeholder="Last Name" name="lastname" required>
+                    <label class="block text-sm font-medium mb-1" for="gender">Gender</label>
+                    <select id="gender" class="block w-full p-2 mb-4 rounded border-gray-600 bg-gray-700 text-white" name="gender" required>
+                        <option>Male</option>
+                        <option>Female</option>
                     </select>
-
-                    <br>
-
-                    <!--Department-->
-                    <label class="thirdRowText" for="department">Department</label>
-                    <br>
-                    <select id="department" class="thirdRowInput departments" name="department" required></select>
+                    <label class="block text-sm font-medium mb-1" for="department">Department</label>
+                    <select id="department" class="block w-full p-2 rounded border-gray-600 bg-gray-700 text-white" name="department" required></select>
                 </div>
             </div>
-            <hr id="characterCreatorTopTextLine">
-            <button id="submitCharacterCreation" class="characterSubmitButton" type="submit" form="characterCreator"><a class="fas fa-plus-circle" style="color:white;"></a> Create Character</button>
-            <button id="cancelCharacterCreation" class="characterResetButton" type="reset"><a class="fas fa-times-circle" style="color:white;"></a> Cancel</button>
+            <hr class="border-gray-600 my-4">
+            <div class="flex justify-between">
+                <button id="submitCharacterCreation" class="bg-green-600 text-white px-4 py-2 rounded flex items-center gap-2" type="submit">
+                    <i class="fas fa-plus-circle"></i> Create Character
+                </button>
+                <button id="cancelCharacterCreation" class="bg-gray-600 text-white px-4 py-2 rounded flex items-center gap-2" type="reset">
+                    <i class="fas fa-times-circle"></i> Cancel
+                </button>
+            </div>
         </form>
 
-        <!--Edit character menu design-->
-        <form id="characterEditor" class="characterMenu">
-            <p id="characterCreatorTopText"><a class="fas fa-user-edit" style="color:white;"></a> Character Editor</p>
-            <hr id="characterCreatorTopTextLine">
-            <div id="characterInfoContainer">
-                <div id="characterInfoContainerLeft">
-                    <!--First name-->
-                    <label class="firstRowText" for="firstname">First Name</label>
-                    <br>
-                    <input id="newFirstName" class="firstRowInput" type="text" placeholder="First Name" name="firstname" required>
-
-                    <br>
-
-                    <!--Dob-->
-                    <label class="secondRowText" for="dob">Date of Birth</label>
-                    <br>
-                    <input id="newDateOfBirth" class="secondRowInput" type="date" name="dob" max="9999-12-31" required>
-
-                    <br>
-
-                    <!--Used to be Twotter name now is Ethnicity-->
-                    <label class="thirdRowText" for="twotter">Ethnicity</label>
-                    <br>
-                    <input id="newTwtName" class="thirdRowInput" type="text" placeholder="Ethnicity" name="twotter" required>
+        <!-- Edit character menu design -->
+        <form id="characterEditor" class="p-4 bg-gray-900 rounded-lg shadow-lg max-w-sm w-full mx-auto absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 hidden">
+            <p id="characterEditorTopText" class="text-2xl font-semibold mb-2">
+                <i class="fas fa-user-edit"></i> Character Editor
+            </p>
+            <hr class="border-gray-600 mb-4">
+            <div id="characterInfoContainer" class="flex gap-4">
+                <div class="flex-1">
+                    <label class="block text-sm font-medium mb-1" for="newFirstName">First Name</label>
+                    <input id="newFirstName" class="block w-full p-2 mb-4 rounded border-gray-600 bg-gray-700 text-white" type="text" placeholder="First Name" name="firstname" required>
+                    <label class="block text-sm font-medium mb-1" for="newDateOfBirth">Date of Birth</label>
+                    <input id="newDateOfBirth" class="block w-full p-2 mb-4 rounded border-gray-600 bg-gray-700 text-white" type="date" name="dob" max="9999-12-31" required>
+                    <label class="block text-sm font-medium mb-1" for="newEthnicity">Ethnicity</label>
+                    <input id="newEthnicity" class="block w-full p-2 mb-4 rounded border-gray-600 bg-gray-700 text-white" type="text" placeholder="Ethnicity" name="ethnicity" required>
                 </div>
-                <div id="characterInfoContainerRight">
-                    <!--Last name-->
-                    <label class="firstRowText" for="lastname">Last Name</label>
-                    <br>
-                    <input id="newLastName" style="width: 93%;" class="firstRowInput" type="text" placeholder="Last Name" name="lastname" required>
-                    
-                    <br>
-
-                    <!--gender-->
-                    <label class="secondRowText" for="gender">Gender</label>
-                    <br>
-                    <select id="newGender" class="secondRowInput" name="gender" required>
-                        <option class="secondRowInput">Male</option>
-                        <option class="secondRowInput">Female</option>
+                <div class="flex-1">
+                    <label class="block text-sm font-medium mb-1" for="newLastName">Last Name</label>
+                    <input id="newLastName" class="block w-full p-2 mb-4 rounded border-gray-600 bg-gray-700 text-white" type="text" placeholder="Last Name" name="lastname" required>
+                    <label class="block text-sm font-medium mb-1" for="newGender">Gender</label>
+                    <select id="newGender" class="block w-full p-2 mb-4 rounded border-gray-600 bg-gray-700 text-white" name="gender" required>
+                        <option value="">Select Gender</option>
+                        <option value="Male">Male</option>
+                        <option value="Female">Female</option>
                     </select>
-
-                    <br>
-                    
-                    <!--Department-->
-                    <label class="thirdRowText" for="department">Department</label>
-                    <br>
-                    <select id="newDepartment" class="thirdRowInput departments" name="department" required></select>
+                    <label class="block text-sm font-medium mb-1" for="department">Department</label>
+                    <select id="department" class="block w-full p-2 rounded border-gray-600 bg-gray-700 text-white" name="department" required></select>
                 </div>
             </div>
-            <hr id="characterCreatorTopTextLine">
-            <button id="submitCharacterEditing" class="characterSubmitButton" type="submit" form="characterEditor"><a class="fas fa-plus-circle" style="color:white;"></a> Save Changes</button>
-            <button id="cancelCharacterEditing" class="characterResetButton" type="reset"><a class="fas fa-times-circle" style="color:white;"></a> Cancel</button>
+            <hr class="border-gray-600 my-4">
+            <div class="flex justify-between">
+                <button id="submitCharacterEditing" class="bg-green-600 text-white px-4 py-2 rounded flex items-center gap-2" type="submit">
+                    <i class="fas fa-plus-circle"></i> Save Changes
+                </button>
+                <button id="cancelCharacterEditing" class="bg-gray-600 text-white px-4 py-2 rounded flex items-center gap-2" type="button" onclick="document.getElementById('characterEditor').classList.add('hidden');">
+                    <i class="fas fa-times-circle"></i> Cancel
+                </button>
+            </div>
         </form>
 
-        <!--Character Spawn options-->
-        <section id="spawnLocation" class="spawnMenu">
-            <p id="characterCreatorTopText"><a class="fas fa-map-marker-alt" style="color:white;"></a> Spawn Location</p>
-            <hr id="characterCreatorTopTextLine">
-            <div id="spawnMenuContainer">
-                <!--Spawn locations will be added here-->
+        <!-- Character Spawn options -->
+        <section id="spawnLocation" class="fixed inset-0 hidden z-50">
+            <div class="bg-gray-900 rounded-lg shadow-lg max-w-sm w-full p-4 absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2">
+                <p class="text-2xl font-semibold mb-2">
+                    <i class="fas fa-map-marker-alt"></i> Spawn Location
+                </p>
+                <hr class="border-gray-600 mb-4">
+                <div id="spawnMenuContainer" class="flex flex-col gap-2 mb-4">
+                    <!-- Spawn locations will be added here -->
+                </div>
+                <hr class="border-gray-600 mb-4">
+                <div class="flex justify-between">
+                    <button id="tpDoNot" class="bg-indigo-600 text-white px-4 py-2 rounded flex items-center gap-2">
+                        <i class="fas fa-compass"></i> Do Not Teleport
+                    </button>
+                    <button id="tpCancel" class="bg-gray-600 text-white px-4 py-2 rounded flex items-center gap-2">
+                        <i class="fas fa-times-circle"></i> Cancel
+                    </button>
+                </div>
             </div>
-            <hr id="characterCreatorTopTextLine" style="margin-top: 3vh;">
-            <button id="tpDoNot" class="characterSubmitButton" style="margin-left: 26vw; margin-bottom: 2vh;"><a class="fas fa-compass" style="color:white;"></a> Last locations</button>
-            <button id="tpCancel" class="characterResetButton"><a class="fas fa-times-circle" style="color:white;"></a> Cancel</button>
         </section>
 
-        <!--Confirm exit game menu design-->
-        <section id="exitGameMenu" class="confirmationScreen">
-            <p id="characterCreatorTopText">Are you sure you'd like to quit the game?</p>
-            <hr id="characterCreatorTopTextLine">
-            <button id="exitGameConfirm" class="confirmationScreenConfirm"><a class="fas fa-check-circle" style="color:white;"></a> Confirm</button>
-            <button id="exitGameCancel" class="confirmationScreenCancel"><a class="fas fa-times-circle" style="color:white;"></a> Cancel</button>
+        <!-- Confirm exit game menu design -->
+        <section id="exitGameMenu" class="p-4 bg-gray-900 rounded-lg shadow-lg hidden max-w-md mx-auto absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2">
+            <p class="text-2xl font-semibold mb-2 text-center">Are you sure you'd like to quit the game?</p>
+            <hr class="border-gray-600 mb-4">
+            <div class="flex justify-between">
+                <button id="exitGameConfirm" class="bg-green-600 text-white px-4 py-2 rounded flex items-center gap-2">
+                    <i class="fas fa-check-circle"></i> Confirm
+                </button>
+                <button id="exitGameCancel" class="bg-gray-600 text-white px-4 py-2 rounded flex items-center gap-2">
+                    <i class="fas fa-times-circle"></i> Cancel
+                </button>
+            </div>
         </section>
 
-        <!--Confirm delete character button-->
-        <section id="deleteCharacterMenu" class="confirmationScreen">
-            <p id="characterCreatorTopText">Are you sure you'd like to delete this character?</p>
-            <hr id="characterCreatorTopTextLine">
-            <button id="deleteCharacterConfirm" class="confirmationScreenConfirm"><a class="fas fa-check-circle" style="color:white;"></a> Confirm</button>
-            <button id="deleteCharacterCancel" class="confirmationScreenCancel"><a class="fas fa-times-circle" style="color:white;"></a> Cancel</button>
+        <!-- Confirm delete character button -->
+        <section id="deleteCharacterMenu" class="p-4 bg-gray-900 rounded-lg shadow-lg hidden w-full mx-auto absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2">
+            <p class="text-2xl font-semibold mb-2">Are you sure you'd like to delete this character?</p>
+            <hr class="border-gray-600 mb-4">
+            <div class="flex justify-between">
+                <button id="deleteCharacterConfirm" class="bg-green-600 text-white px-4 py-2 rounded flex items-center gap-2">
+                    <i class="fas fa-check-circle"></i> Confirm
+                </button>
+                <button id="deleteCharacterCancel" class="bg-gray-600 text-white px-4 py-2 rounded flex items-center gap-2">
+                    <i class="fas fa-times-circle"></i> Cancel
+                </button>
+            </div>
         </section>
-    </body>
+    </div>
+
+
+</body>
 </html>
