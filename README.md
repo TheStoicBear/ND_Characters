@@ -1,13 +1,13 @@
 <p align="center">
   <img src="https://user-images.githubusercontent.com/86536434/193914535-e68e6ec0-66c9-46bb-8d0d-b609b7a5ba42.png" />
 </p>
-<p align='center'><b><a href="https://youtu.be/7A2PH-AB5FQ">Preview Video</a></b>
+<p align='center'><b><a href="https://streamable.com/k9wwvw">Preview Video | Reworked</a></b>
 
 ## Reworked
 
 ![image](https://github.com/user-attachments/assets/8ba91299-309a-44c3-a18b-e1ade4520ce6)
 ![image](https://github.com/user-attachments/assets/cab41ea1-3101-44e5-87f0-d48c9c594bbe)
-https://streamable.com/k9wwvw
+
 
 
 
