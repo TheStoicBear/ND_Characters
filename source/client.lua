@@ -120,6 +120,7 @@ function start(switch)
         type = "givePerms",
         deptRoles = json.encode(perms)
     })
+
     SendNUIMessage({
         type = "refresh",
         characters = json.encode(characters)
