@@ -162,6 +162,7 @@ lib.callback.register("ND_Characters:fetchCharacters", function(source)
     return characters, perms
 end)
 
+
 RegisterNetEvent("ND_Characters:select", function(id)
     local src = source
     NDCore.setActiveCharacter(src, tonumber(id))
