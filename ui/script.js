@@ -41,24 +41,25 @@ function createCharacter(firstName, lastName, dateOfBirth, gender, ethnicity, de
     const charButtonClass = (firstName.length + lastName.length + (job ? job.length : 0)) > 24 ? 
         `bg-blue-900 text-white py-2 px-4 rounded flex-1` : `bg-blue-900 text-white py-2 px-4 rounded flex-1`;
 
-    $("#charactersSection").append(`
-        <div class="flex mb-2">
-            <button id="characterButton${id}" class="${charButtonClass} flex-1 flex justify-between items-center">
-                <div class="flex flex-col">
-                    <span class="font-bold">${firstName} ${lastName}</span>
-                    <div class="text-sm text-blue-300">${job}</div>
-                </div>
-                <div class="flex gap-2 items-center">
-                    <span class="bg-yellow-500 text-white py-1 px-2 rounded-lg flex items-center cursor-pointer" id="characterButtonEdit${id}">
-                        <i class="fas fa-edit mr-1"></i>
-                    </span>
-                    <span class="bg-red-600 text-white py-1 px-2 rounded-lg flex items-center cursor-pointer" id="characterButtonDelete${id}">
-                        <i class="fas fa-trash-alt mr-1"></i>
-                    </span>
-                </div>
-            </button>
-        </div>
-    `);
+$("#charactersSection").append(`
+    <div class="flex mb-2">
+        <button id="characterButton${id}" class="text-white py-2 px-4 rounded flex-1 flex justify-between items-center" 
+            style="background-color: #0a5efa; box-shadow: 0px 4px 10px rgba(0, 0, 255, 0.6); filter: brightness(1.2);">
+            <div class="flex flex-col pr-8"> <!-- Added padding-right here -->
+                <span class="font-bold">${firstName} ${lastName}</span>
+                <div class="text-sm text-blue-300">${job}</div>
+            </div>
+            <div class="flex gap-2 items-center">
+                <span class="bg-yellow-500 text-white py-1 px-2 rounded-lg flex items-center cursor-pointer" id="characterButtonEdit${id}">
+                    <i class="fas fa-edit mr-1"></i>
+                </span>
+                <span class="bg-red-600 text-white py-1 px-2 rounded-lg flex items-center cursor-pointer" id="characterButtonDelete${id}">
+                    <i class="fas fa-trash-alt mr-1"></i>
+                </span>
+            </div>
+        </button>
+    </div>
+`);
 
 
     // Handle click on the character button
@@ -202,20 +203,23 @@ window.addEventListener("message", function(event) {
         }
     }
 
-    if (item.type === "setSpawns") {
-        $("#spawnMenuContainer").empty();
-        setTimeout(function() {
-            $("#tpDoNot").data("id", item.id);
-            JSON.parse(item.spawns).forEach((location) => {
-                $("#spawnMenuContainer").append(`
-                    <button class="spawnButtons bg-blue-900 text-white py-2 px-4 rounded-lg mb-2" 
-                        data-x="${location.coords.x}" data-y="${location.coords.y}" data-z="${location.coords.z}" data-id="${item.id}">
-                        ${location.label}
-                    </button>
-                `);
-            });
-        }, 10);
-    }
+if (item.type === "setSpawns") {
+    $("#spawnMenuContainer").empty();
+    setTimeout(function() {
+        $("#tpDoNot").data("id", item.id);
+        JSON.parse(item.spawns).forEach((location) => {
+            $("#spawnMenuContainer").append(`
+                <button class="spawnButtons text-white py-2 px-4 rounded-lg mb-2" 
+                    style="background-color: #0a5efa;" 
+                    data-x="${location.coords.x}" data-y="${location.coords.y}" data-z="${location.coords.z}" data-id="${item.id}">
+                    ${location.label}
+                </button>
+            `);
+        });
+    }, 10);
+}
+
+
 
     if (item.type === "firstSpawn") {
         $("#tpDoNot").html(`<i class="fas fa-compass text-white"></i> Do not teleport`);
